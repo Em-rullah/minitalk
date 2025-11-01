@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emkir <emkir@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/01 16:02:00 by emkir             #+#    #+#             */
+/*   Updated: 2025/11/01 16:21:27 by emkir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-int	ft_atoi(const char *nptr)
+static int	ft_atoi(const char *nptr)
 {
 	int		i;
 	int		sign;
@@ -26,7 +38,7 @@ int	ft_atoi(const char *nptr)
 	return (n * sign);
 }
 
-void	send_msg(pid_t pid, unsigned char c)
+static void	send_msg(int pid, unsigned char c)
 {
 	int	bit;
 	int	i;
@@ -44,10 +56,9 @@ void	send_msg(pid_t pid, unsigned char c)
 	}
 }
 
-
 int	main(int c, char *argv[])
 {
-	pid_t	pid;
+	int	pid;
 
 	if (c != 3)
 		exit(1);

@@ -1,13 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emkir <emkir@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/01 16:21:07 by emkir             #+#    #+#             */
+/*   Updated: 2025/11/01 16:21:34 by emkir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handler(int sig, siginfo_t *info, void *context)
+static void	handler(int sig)
 {
 	static unsigned char	bit;
 	static int				count;
 
-	(void)info;
-	(void)context;
 	if (count == 0)
 		bit = 0;
 	if (sig == SIGUSR2)
@@ -15,7 +24,7 @@ void	handler(int sig, siginfo_t *info, void *context)
 	count++;
 	if (count == 8)
 	{
-		if (bit == 0)
+		if (bit == '\0')
 			write(1, "\n", 1);
 		else
 			write(1, &bit, 1);
@@ -24,12 +33,12 @@ void	handler(int sig, siginfo_t *info, void *context)
 	}
 }
 
-void	ft_putchar_fd(char c, int fd)
+static void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+static void	ft_putnbr_fd(int n, int fd)
 {
 	char	tmp_c;
 	long	tmp_n;
@@ -56,11 +65,8 @@ int	main(void)
 {
 	struct sigaction	act;
 
-	act.sa_flags = SA_SIGINFO | SA_RESTART;
-	sigemptyset(&act.sa_mask);
-	sigaddset(&act.sa_mask, SIGUSR1);
-	sigaddset(&act.sa_mask, SIGUSR2);
-	act.sa_sigaction = handler;
+	act.sa_flags = 0;
+	act.sa_handler = handler;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	ft_putnbr_fd(getpid(), 1);

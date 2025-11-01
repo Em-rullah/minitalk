@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emkir <emkir@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/01 15:47:03 by emkir             #+#    #+#             */
+/*   Updated: 2025/11/01 16:17:43 by emkir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef MINITALK_H
+# define MINITALK_H
 
-void	handler(int signal, siginfo_t *info, void *context);
+# include <signal.h>
+# include <unistd.h>
+# include <stdlib.h>
+
+#endif
