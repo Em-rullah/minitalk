@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emkir <emkir@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:02:00 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/01 16:21:27 by emkir            ###   ########.fr       */
+/*   Updated: 2025/11/03 12:01:19 by emrul            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,19 @@ static void	send_msg(int pid, unsigned char c)
 		else
 			kill(pid, SIGUSR1);
 		i--;
-		usleep(300);
+		usleep(150);
 	}
 }
 
 int	main(int c, char *argv[])
 {
-	int	pid;
+	pid_t	pid;
 
 	if (c != 3)
-		exit(1);
+		exit(EXIT_FAILURE);
 	pid = ft_atoi(argv[1]);
 	if (kill(pid, 0) == -1)
-		exit(1);
+		exit(EXIT_FAILURE);
 	while (*argv[2])
 	{
 		send_msg(pid, *argv[2]);

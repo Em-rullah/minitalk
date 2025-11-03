@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emkir <emkir@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:21:07 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/01 16:21:34 by emkir            ###   ########.fr       */
+/*   Updated: 2025/11/03 11:59:25 by emrul            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,10 @@ static void	ft_putnbr_fd(int n, int fd)
 
 int	main(void)
 {
-	struct sigaction	act;
-
-	act.sa_flags = 0;
-	act.sa_handler = handler;
-	sigaction(SIGUSR1, &act, NULL);
-	sigaction(SIGUSR2, &act, NULL);
-	ft_putnbr_fd(getpid(), 1);
+	ft_putnbr_fd((int)getpid(), 1);
 	ft_putchar_fd('\n', 1);
+	signal(SIGUSR1, handler);
+	signal(SIGUSR2, handler);
 	while (1)
 		pause();
 }
