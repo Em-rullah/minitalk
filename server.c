@@ -6,17 +6,19 @@
 /*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:21:07 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/03 11:59:25 by emrul            ###   ########.fr       */
+/*   Updated: 2025/11/11 12:13:53 by emrul            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	handler(int sig)
+static void	handler(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char	bit;
 	static int				count;
 
+	(void) context;
+	(void) info;
 	if (count == 0)
 		bit = 0;
 	if (sig == SIGUSR2)
@@ -31,6 +33,8 @@ static void	handler(int sig)
 		count = 0;
 		bit = 0;
 	}
+	if (info && info->si_pid > 1)
+		kill(info->si_pid, SIGUSR1);
 }
 
 static void	ft_putchar_fd(char c, int fd)
@@ -63,10 +67,15 @@ static void	ft_putnbr_fd(int n, int fd)
 
 int	main(void)
 {
+	struct sigaction	sa;
+
 	ft_putnbr_fd((int)getpid(), 1);
 	ft_putchar_fd('\n', 1);
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 		pause();
 }
