@@ -6,13 +6,13 @@
 /*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:02:00 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/11 12:18:04 by emrul            ###   ########.fr       */
+/*   Updated: 2025/11/12 23:57:05 by emrul            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static volatile int	ack = 0;
+static volatile int	ack;
 
 static void	handler(int sig, siginfo_t *info, void *context)
 {
@@ -53,6 +53,7 @@ static void	send_msg(int pid, unsigned char c)
 	int	bit;
 	int	i;
 
+	ack = 0;
 	i = 7;
 	while (i >= 0)
 	{
