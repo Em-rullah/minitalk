@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emkir <emkir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:21:07 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/11 12:13:53 by emrul            ###   ########.fr       */
+/*   Updated: 2025/11/13 11:33:21 by emkir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	handler(int sig, siginfo_t *info, void *context)
 		count = 0;
 		bit = 0;
 	}
-	if (info && info->si_pid > 1)
 		kill(info->si_pid, SIGUSR1);
 }
 

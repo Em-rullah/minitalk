@@ -3,23 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emrul <emrul@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emkir <emkir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 16:02:00 by emkir             #+#    #+#             */
-/*   Updated: 2025/11/12 23:57:05 by emrul            ###   ########.fr       */
+/*   Updated: 2025/11/13 11:35:54 by emkir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static volatile int	ack;
+static volatile sig_atomic_t	g_sig_control;
 
-static void	handler(int sig, siginfo_t *info, void *context)
+static void	handler(sig_atomic_t sig, siginfo_t *info, void *context)
 {
 	(void)info;
 	(void)context;
-	if (sig == SIGUSR1)
-		ack = 1;
+	(void)sig;
+	g_sig_control = 1;
+}
+
+static void	range_control(long n)
+{
+	if (-2147483648 > n || n > 2147483647)
+		exit(EXIT_FAILURE);
 }
 
 static int	ft_atoi(const char *nptr)
@@ -44,16 +50,17 @@ static int	ft_atoi(const char *nptr)
 	{
 		n = 10 * n + (nptr[i] - '0');
 		i++;
+		range_control(n * sign);
 	}
 	return (n * sign);
 }
 
-static void	send_msg(int pid, unsigned char c)
+static void	send_msg(pid_t pid, unsigned char c)
 {
 	int	bit;
 	int	i;
 
-	ack = 0;
+	g_sig_control = 0;
 	i = 7;
 	while (i >= 0)
 	{
@@ -62,9 +69,9 @@ static void	send_msg(int pid, unsigned char c)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		while (!ack)
+		while (!g_sig_control)
 			pause();
-		ack = 0;
+		g_sig_control = 0;
 		i--;
 	}
 }
